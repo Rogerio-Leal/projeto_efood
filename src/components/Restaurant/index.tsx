@@ -21,6 +21,7 @@ type Props = {
   avaliacao: number
   descricao: string
   capa: string
+  id: number
 }
 
 export const Restaurant = ({
@@ -29,7 +30,8 @@ export const Restaurant = ({
   tipo,
   avaliacao,
   descricao,
-  capa
+  capa,
+  id
 }: Props) => (
   <Card>
     <CardImage src={capa} alt={titulo} />
@@ -46,7 +48,7 @@ export const Restaurant = ({
         </div>
       </TitleContainer>
       <Description>{descricao}</Description>
-      <Button as={Link} to="/perfil">
+      <Button as={Link} to={`/perfil/${id}`}>
         Saiba mais
       </Button>
     </InfoContainer>

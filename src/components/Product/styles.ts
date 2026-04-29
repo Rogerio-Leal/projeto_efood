@@ -6,6 +6,9 @@ export const Card = styled.div`
   background-color: ${cores.principal};
   color: #ffebd9;
   padding: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `
 
 export const Imagem = styled.img`
@@ -36,6 +39,7 @@ export const BotaoAdicionar = styled.button`
   font-weight: 900;
   font-size: 14px;
   cursor: pointer;
+  margin-top: auto;
 
   transition: filter 0.2s;
   &:hover {

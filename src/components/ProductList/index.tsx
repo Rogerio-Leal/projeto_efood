@@ -1,62 +1,53 @@
+import { useState } from 'react'
 import { Product } from '../Product'
-import { Container } from './styles'
+import { Container, Modal, ModalContent, ModalInfos, CloseIcon } from './styles'
 
-import PizzaImg from '../../assets/images/pizza.png'
+import { Prato } from '../../models'
 
-const pratos = [
-  {
-    id: 1,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
-  },
-  {
-    id: 2,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
-  },
-  {
-    id: 3,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
-  },
-  {
-    id: 4,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
-  },
-  {
-    id: 5,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
-  },
-  {
-    id: 6,
-    nome: 'Pizza Marguerita',
-    descricao:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    foto: PizzaImg
+type Props = {
+  pratos: Prato[]
+}
+
+export const ProductList = ({ pratos }: Props) => {
+  const [pratoSelecionado, setPratoSelecionado] = useState<Prato | null>(null)
+
+  const fecharModal = () => {
+    setPratoSelecionado(null)
   }
-]
 
-export const ProductList = () => (
-  <Container>
-    {pratos.map((prato) => (
-      <Product
-        key={prato.id}
-        foto={prato.foto}
-        nome={prato.nome}
-        descricao={prato.descricao}
-      />
-    ))}
-  </Container>
-)
+  return (
+    <>
+      <Container>
+        {pratos.map((prato) => (
+          <Product
+            key={prato.id}
+            foto={prato.foto}
+            nome={prato.nome}
+            descricao={prato.descricao}
+            onClick={() => setPratoSelecionado(prato)}
+          />
+        ))}
+      </Container>
+      {pratoSelecionado && (
+        <Modal className="overlay" onClick={fecharModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <CloseIcon onClick={fecharModal}></CloseIcon>
+            <img src={pratoSelecionado.foto} alt={pratoSelecionado.nome} />
+            <ModalInfos>
+              <h4>{pratoSelecionado.nome}</h4>
+              <p>{pratoSelecionado.descricao}</p>
+              <p>Serve: {pratoSelecionado.porcao}</p>
+              <button>
+                Adicionar ao carrinho -{' '}
+                {new Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL'
+                }).format(pratoSelecionado.preco)}
+              </button>
+            </ModalInfos>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
+  )
+}
